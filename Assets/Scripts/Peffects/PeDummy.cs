@@ -85,6 +85,7 @@ namespace Peffects
 		private void Activate()
 		{
 			_rootEmission.enabled = true;
+			ChangeChildrenState(true);
 			_currentDummyState = DummyState.Spawened;
 		}
 
@@ -93,7 +94,13 @@ namespace Peffects
 			_rootEmission.enabled = false;
 			_cachedTransform.parent = _pool.transform;
 			_cachedTransform.localPosition = Vector3.zero;
+			ChangeChildrenState(false);
 			_currentDummyState = DummyState.DeSpawned;
+		}
+
+		private void ChangeChildrenState(bool state)
+		{
+
 		}
 
 		private void Update()

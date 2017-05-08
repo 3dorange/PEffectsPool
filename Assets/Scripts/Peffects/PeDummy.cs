@@ -21,6 +21,7 @@ namespace Peffects
 		private ParticleSystem.MainModule _rootMain;
 		private ParticleSystem.EmissionModule _rootEmission;
 		private ParticleSystem.ShapeModule _rootShape;
+		private ParticleSystem.ColorOverLifetimeModule _rootColorOverLife;
 
 		private Action _deSpawnCallback;
 		private float _deSpawnTime;
@@ -39,7 +40,7 @@ namespace Peffects
 			AddRootParticleSystem();
 		}
 
-		public void Spawn(int id,Vector3 position, Quaternion rotation, Transform parent = null, float deSpawnTime = 0, Action deSpawnCallback = null)
+		public void Spawn(int id, PeffectData data, Vector3 position, Quaternion rotation, Transform parent = null, float deSpawnTime = 0, Action deSpawnCallback = null)
 		{
 			if (_currentDummyState == DummyState.Spawened)
 			{
@@ -48,6 +49,8 @@ namespace Peffects
 			}
 
 			_id = id;
+
+			UseEffectData(data);
 
 			_cachedTransform.position = position;
 			_cachedTransform.rotation = rotation;
@@ -83,6 +86,96 @@ namespace Peffects
 			_spawnTime = 0;
 		}
 
+		private void UseEffectData(PeffectData data)
+		{
+//			_rootPs.Stop();
+//			_rootPs.gameObject.SetActive(false);
+			if (_rootPs.isStopped)
+			{
+				UpdateMain(data.GetMain());
+				UpdateRender(data.GetRender());
+				UpdateColorOverLife(data.GetColorOverLife());
+			}
+			else
+			{
+				Debug.Log(_cachedTransform.name);
+				Debug.Break();
+			}
+//			_rootPs.gameObject.SetActive(true);
+		}
+
+		private void UpdateMain(PeffectData.PeMain peMain)
+		{
+			_rootMain.customSimulationSpace = peMain.CustomSimulationSpace;
+			_rootMain.duration = peMain.Duration;
+			_rootMain.gravityModifier = peMain.GravityModifier;
+			_rootMain.gravityModifierMultiplier = peMain.GravityModifierMultiplier;
+			_rootMain.loop = peMain.Loop;
+			_rootMain.maxParticles = peMain.MaxParticles;
+//			_rootMain.playOnAwake = peMain.PlayOnAwake;
+			_rootMain.prewarm = peMain.Prewarm;
+			_rootMain.randomizeRotationDirection = peMain.RandomizeRotationDirection;
+			_rootMain.scalingMode = peMain.ScalingMode;
+			_rootMain.simulationSpace = peMain.SimulationSpace;
+			_rootMain.simulationSpeed = peMain.SimulationSpeed;
+			_rootMain.startColor = peMain.StartColor;
+			_rootMain.startDelay = peMain.StartDelay;
+			_rootMain.startDelayMultiplier = peMain.StartDelayMultiplier;
+			_rootMain.startLifetime = peMain.StartLifetime;
+			_rootMain.startLifetimeMultiplier = peMain.StartLifetimeMultiplier;
+			_rootMain.startRotation = peMain.StartRotation;
+			_rootMain.startRotation3D = peMain.StartRotation3D;
+			_rootMain.startRotationMultiplier = peMain.StartRotationMultiplier;
+			_rootMain.startRotationX = peMain.StartRotationX;
+			_rootMain.startRotationXMultiplier = peMain.StartRotationXMultiplier;
+			_rootMain.startRotationY = peMain.StartRotationY;
+			_rootMain.startRotationYMultiplier = peMain.StartRotationYMultiplier;
+			_rootMain.startRotationZ = peMain.StartRotationZ;
+			_rootMain.startRotationZMultiplier = peMain.StartRotationZMultiplier;
+			_rootMain.startSize = peMain.StartSize;
+			_rootMain.startSize3D = peMain.StartSize3D;
+			_rootMain.startSizeMultiplier = peMain.StartSizeMultiplier;
+			_rootMain.startSizeX = peMain.StartSizeX;
+			_rootMain.startSizeXMultiplier = peMain.StartSizeXMultiplier;
+			_rootMain.startSizeY = peMain.StartSizeY;
+			_rootMain.startSizeYMultiplier = peMain.StartSizeYMultiplier;
+			_rootMain.startSizeZ = peMain.StartSizeZ;
+			_rootMain.startSizeZMultiplier = peMain.StartSizeZMultiplier;
+			_rootMain.startSpeed = peMain.StartSpeed;
+			_rootMain.startSpeedMultiplier = peMain.StartSpeedMultiplier;
+		}
+
+		private void UpdateRender(PeffectData.PeRender peRender)
+		{
+			_rootPsRender.alignment = peRender.Alignment;
+			_rootPsRender.cameraVelocityScale = peRender.CameraVelocityScale;
+			_rootPsRender.lengthScale = peRender.LengthScale;
+			_rootPsRender.maxParticleSize = peRender.MaxParticleSize;
+			_rootPsRender.mesh = peRender.PeMesh;
+			_rootPsRender.minParticleSize = peRender.MinParticleSize;
+			_rootPsRender.normalDirection = peRender.NormalDirection;
+			_rootPsRender.pivot = peRender.Pivot;
+			_rootPsRender.renderMode = peRender.RenderMode;
+			_rootPsRender.sortingFudge = peRender.SortingFudge;
+			_rootPsRender.sortMode = peRender.SortMode;
+			_rootPsRender.trailMaterial = peRender.TrailMaterial;
+			_rootPsRender.velocityScale = peRender.VelocityScale;
+			_rootPsRender.sharedMaterial = peRender.SharedMaterial;
+			_rootPsRender.sharedMaterials = peRender.SharedMaterials;
+			_rootPsRender.motionVectorGenerationMode = peRender.MotionVectorGenerationMode;
+			_rootPsRender.receiveShadows = peRender.ReceiveShadows;
+			_rootPsRender.reflectionProbeUsage = peRender.ReflectionProbeUsage;
+			_rootPsRender.sortingLayerID = peRender.SortingLayerId;
+			_rootPsRender.sortingLayerName = peRender.SortingLayerName;
+			_rootPsRender.sortingOrder = peRender.SortingOrder;
+		}
+
+		private void UpdateColorOverLife(PeffectData.PeColorOverLife peColorOverLife)
+		{
+			_rootColorOverLife.enabled = peColorOverLife.Enabled;
+			_rootColorOverLife.color = peColorOverLife.Color;
+		}
+
 		private void Activate()
 		{
 			_rootEmission.enabled = true;
@@ -93,10 +186,10 @@ namespace Peffects
 
 		private void Deactivate()
 		{
-			_rootEmission.enabled = false;
 			_rootPs.Stop();
+			_rootEmission.enabled = false;
 			_cachedTransform.parent = _pool.transform;
-			_cachedTransform.localPosition = Vector3.zero;
+//			_cachedTransform.localPosition = Vector3.zero;
 			ChangeChildrenState(false);
 			_currentDummyState = DummyState.DeSpawned;
 		}
@@ -145,11 +238,14 @@ namespace Peffects
 			_rootMain = _rootPs.main;
 			_rootEmission = _rootPs.emission;
 			_rootShape =_rootPs.shape;
+			_rootColorOverLife = _rootPs.colorOverLifetime;
 
 			_rootMain.playOnAwake = false;
 			_rootEmission.enabled = false;
 			_rootMain.loop = false;
 			_rootShape.shapeType = ParticleSystemShapeType.Sphere;
+
+			_rootPs.Stop();
 		}
 
 	}

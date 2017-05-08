@@ -23,6 +23,7 @@ namespace Peffects
 		private Dictionary<int,PeDummy> _dummies = new Dictionary<int, PeDummy>();						//particleSystem dummies
 		private Dictionary<string,PeffectData> _effectsData = new Dictionary<string, PeffectData>();		//data and parameters from particles for dummies
 		private List<int> _dummiesInUse = new List<int>();
+		private List<int> _dummiesIdToRemoveFromUsing = new List<int>();
 
 		private int _dummiesCreated;
 		private bool _needToCreateInUpdate;
@@ -90,7 +91,7 @@ namespace Peffects
 				else
 				{
 					var dummy = _dummies[id];
-					dummy.Spawn(id, position, rotation, parent, deSpawnTime, deSpawnCallback);
+					dummy.Spawn(id,_effectsData[keyCode], position, rotation, parent, deSpawnTime, deSpawnCallback);
 					_dummiesInUse.Add(id);
 				}
 			}
@@ -104,7 +105,8 @@ namespace Peffects
 		public void DeSpawn(PeDummy dummy)
 		{
 			dummy.DeSpawn();
-			_dummiesInUse.Remove(dummy.GetId());
+//			_dummiesInUse.Remove(dummy.GetId());
+			_dummiesIdToRemoveFromUsing.Add(dummy.GetId());
 		}
 
 		private int GetFreeDummyId()
@@ -148,6 +150,18 @@ namespace Peffects
 			{
 				_needToCreateInUpdate = false;
 			}
+		}
+
+		private void LateUpdate()
+		{
+			var count = _dummiesIdToRemoveFromUsing.Count;
+
+			for (var i = 0; i < count; i++)
+			{
+				_dummiesInUse.Remove(_dummiesIdToRemoveFromUsing[i]);
+			}
+
+			_dummiesIdToRemoveFromUsing.Clear();
 		}
 
 		private void CreateDummys()

@@ -8,6 +8,7 @@ namespace Peffects
 	{
 		private PeMain _peMain;
 		private PeRender _peRender;
+		private PeColorOverLife _peColorOverLife;
 
 		private ParticleSystem.EmissionModule _emission;
 		private ParticleSystem.ShapeModule _shape;
@@ -15,7 +16,7 @@ namespace Peffects
 		private ParticleSystem.LimitVelocityOverLifetimeModule _limitVelocityOverLifetime;
 		private ParticleSystem.InheritVelocityModule _inheritVelocity;
 		private ParticleSystem.ForceOverLifetimeModule _forceOverLifetime;
-		private ParticleSystem.ColorOverLifetimeModule _colorOverLifetime;
+//		private ParticleSystem.ColorOverLifetimeModule _colorOverLifetime;
 		private ParticleSystem.ColorBySpeedModule _colorBySpeed;
 		private ParticleSystem.SizeOverLifetimeModule _sizeOverLifetime;
 		private ParticleSystem.SizeBySpeedModule _sizeBySpeed;
@@ -23,12 +24,30 @@ namespace Peffects
 		private ParticleSystem.RotationBySpeedModule _rotationBySpeed;
 		private ParticleSystem.ExternalForcesModule _externalForces;
 		private ParticleSystem.NoiseModule _noise;
+
 		//private ParticleSystem.CollisionModule _collision;
 		//private ParticleSystem.TriggerModule _trigger;
 		//private ParticleSystem.SubEmittersModule _subEmitters;
+
 		private ParticleSystem.TextureSheetAnimationModule _textureSheetAnimation;
+
 		//private ParticleSystem.LightsModule _lights;
 		//private ParticleSystem.TrailModule _trails;
+
+		public PeMain GetMain()
+		{
+			return _peMain;
+		}
+
+		public PeRender GetRender()
+		{
+			return _peRender;
+		}
+
+		public PeColorOverLife GetColorOverLife()
+		{
+			return _peColorOverLife;
+		}
 
 		public PeffectData(ParticleSystem particleSystem, ParticleSystemRenderer particleSystemRenderer)
 		{
@@ -101,6 +120,20 @@ namespace Peffects
 				SortingOrder = particleSystemRenderer.sortingOrder
 			};
 			#endregion
+			#region ColorOverLife
+			_peColorOverLife = new PeColorOverLife
+			{
+				Enabled = particleSystem.colorOverLifetime.enabled,
+				Color = particleSystem.colorOverLifetime.color
+			};
+
+			#endregion
+		}
+
+		public class PeColorOverLife
+		{
+			public bool Enabled;
+			public ParticleSystem.MinMaxGradient Color;
 		}
 
 		public class PeMain
@@ -110,7 +143,7 @@ namespace Peffects
 			public ParticleSystem.MinMaxCurve GravityModifier;
 			public float GravityModifierMultiplier;
 			public bool Loop;
-			public float MaxParticles;
+			public int MaxParticles;
 			public bool PlayOnAwake;
 			public bool Prewarm;
 			public float RandomizeRotationDirection;

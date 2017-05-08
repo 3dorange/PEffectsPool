@@ -46,31 +46,31 @@ namespace Peffects
 
 				if (_currentRedTimer <= 0)
 				{
-					PEffectsPool.Instance.Spawn("red", GetRandomPos(), Quaternion.identity, transform, 1.5f);
+					PEffectsPool.Instance.Spawn("red", GetRandomPos(), Quaternion.identity, transform, 2.5f);
 					_currentRedTimer = RedTimer;
 				}
 
 				if (_currentBlueTimer <= 0)
 				{
-					PEffectsPool.Instance.Spawn("green", GetRandomPos(), Quaternion.identity, transform, 1.5f);
+					PEffectsPool.Instance.Spawn("green", GetRandomPos(), Quaternion.identity, transform, 2.5f);
 					_currentBlueTimer = BlueTimer;
 				}
 
 				if (_currentGreenTimer <= 0)
 				{
-					PEffectsPool.Instance.Spawn("blue", GetRandomPos(), Quaternion.identity, transform, 1.5f);
+					PEffectsPool.Instance.Spawn("blue", GetRandomPos(), Quaternion.identity, transform, 2.5f);
 					_currentGreenTimer = GreenTimer;
 				}
 
 				if (_currentPurpleTimer <= 0)
 				{
-					PEffectsPool.Instance.Spawn("purple", GetRandomPos(), Quaternion.identity, transform, 1.5f);
+					PEffectsPool.Instance.Spawn("purple", GetRandomPos(), Quaternion.identity, transform, 2.5f);
 					_currentPurpleTimer = PurpleTimer;
 				}
 
 				if (_currentYellowTimer <= 0)
 				{
-					PEffectsPool.Instance.Spawn("yellow", GetRandomPos(), Quaternion.identity, transform, 1.5f);
+					PEffectsPool.Instance.Spawn("yellow", GetRandomPos(), Quaternion.identity, transform, 2.5f);
 					_currentYellowTimer = YellowTimer;
 				}
 			}

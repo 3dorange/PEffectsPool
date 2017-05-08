@@ -9,14 +9,13 @@ namespace Peffects
 		private PeMain _peMain;
 		private PeRender _peRender;
 		private PeColorOverLife _peColorOverLife;
+		private PeShape _peShape;
+		private PeEmission _peEmission;
 
-		private ParticleSystem.EmissionModule _emission;
-		private ParticleSystem.ShapeModule _shape;
 		private ParticleSystem.VelocityOverLifetimeModule _velocityOverLifetime;
 		private ParticleSystem.LimitVelocityOverLifetimeModule _limitVelocityOverLifetime;
 		private ParticleSystem.InheritVelocityModule _inheritVelocity;
 		private ParticleSystem.ForceOverLifetimeModule _forceOverLifetime;
-//		private ParticleSystem.ColorOverLifetimeModule _colorOverLifetime;
 		private ParticleSystem.ColorBySpeedModule _colorBySpeed;
 		private ParticleSystem.SizeOverLifetimeModule _sizeOverLifetime;
 		private ParticleSystem.SizeBySpeedModule _sizeBySpeed;
@@ -47,6 +46,16 @@ namespace Peffects
 		public PeColorOverLife GetColorOverLife()
 		{
 			return _peColorOverLife;
+		}
+
+		public PeShape GetShape()
+		{
+			return _peShape;
+		}
+
+		public PeEmission GetEmission()
+		{
+			return _peEmission;
 		}
 
 		public PeffectData(ParticleSystem particleSystem, ParticleSystemRenderer particleSystemRenderer)
@@ -128,6 +137,77 @@ namespace Peffects
 			};
 
 			#endregion
+			#region Shape
+			_peShape = new PeShape
+			{
+				AlignToDirection = particleSystem.shape.alignToDirection,
+				Enabled = particleSystem.shape.enabled,
+				PeMesh = particleSystem.shape.mesh,
+				PeMeshRenderer = particleSystem.shape.meshRenderer,
+				PeSkinnedMeshRenderer = particleSystem.shape.skinnedMeshRenderer,
+				UseMeshColors = particleSystem.shape.useMeshColors,
+				UseMeshMaterialIndex = particleSystem.shape.useMeshMaterialIndex,
+				Angle = particleSystem.shape.angle,
+				Arc = particleSystem.shape.arc,
+				Box = particleSystem.shape.box,
+				Length = particleSystem.shape.length,
+				MeshMaterialIndex = particleSystem.shape.meshMaterialIndex,
+				MeshScale = particleSystem.shape.meshScale,
+				MeshShapeType = particleSystem.shape.meshShapeType,
+				NormalOffset = particleSystem.shape.normalOffset,
+				Radius = particleSystem.shape.radius,
+				RandomDirectionAmount = particleSystem.shape.randomDirectionAmount,
+				ShapeType = particleSystem.shape.shapeType,
+				SphericalDirectionAmount = particleSystem.shape.sphericalDirectionAmount
+			};
+			#endregion
+			#region Emission
+			_peEmission = new PeEmission
+			{
+				BurstCount = particleSystem.emission.burstCount,
+				Enabled = particleSystem.emission.enabled,
+				RateOverDistance = particleSystem.emission.rateOverDistance,
+				RateOverDistanceMultiplier = particleSystem.emission.rateOverDistanceMultiplier,
+				RateOverTime = particleSystem.emission.rateOverTime,
+				RateOverTimeMultiplier = particleSystem.emission.rateOverTimeMultiplier
+			};
+			_peEmission.Bursts = new ParticleSystem.Burst[particleSystem.emission.burstCount];
+			particleSystem.emission.GetBursts(_peEmission.Bursts);
+			#endregion
+		}
+
+		public class PeShape
+		{
+			public bool AlignToDirection;
+			public bool Enabled;
+			public Mesh PeMesh;
+			public MeshRenderer PeMeshRenderer;
+			public SkinnedMeshRenderer PeSkinnedMeshRenderer;
+			public bool UseMeshColors;
+			public bool UseMeshMaterialIndex;
+			public float Angle;
+			public float Arc;
+			public Vector3 Box;
+			public float Length;
+			public int MeshMaterialIndex;
+			public float MeshScale;
+			public ParticleSystemMeshShapeType MeshShapeType;
+			public float NormalOffset;
+			public float Radius;
+			public float RandomDirectionAmount;
+			public ParticleSystemShapeType ShapeType;
+			public float SphericalDirectionAmount;
+		}
+
+		public class PeEmission
+		{
+			public int BurstCount;
+			public bool Enabled;
+			public ParticleSystem.MinMaxCurve RateOverDistance;
+			public float RateOverDistanceMultiplier;
+			public ParticleSystem.MinMaxCurve RateOverTime;
+			public float RateOverTimeMultiplier;
+			public ParticleSystem.Burst[] Bursts;
 		}
 
 		public class PeColorOverLife

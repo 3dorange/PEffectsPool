@@ -91,7 +91,7 @@ namespace Peffects
 				else
 				{
 					var dummy = _dummies[id];
-					Debug.Log("Spawn " + dummy.name);
+//					Debug.Log("Spawn " + dummy.name);
 					dummy.Spawn(id,_effectsData[keyCode], position, rotation, parent, deSpawnTime, deSpawnCallback);
 					_dummiesInUse.Add(id);
 				}
@@ -105,7 +105,7 @@ namespace Peffects
 
 		public void DeSpawn(PeDummy dummy)
 		{
-			Debug.Log("Despawn " + dummy.name);
+//			Debug.Log("Despawn " + dummy.name);
 			dummy.DeSpawn();
 //			_dummiesInUse.Remove(dummy.GetId());
 			_dummiesIdToRemoveFromUsing.Add(dummy.GetId());

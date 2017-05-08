@@ -88,17 +88,19 @@ namespace Peffects
 
 		private void UseEffectData(PeffectData data)
 		{
-			if (_rootPs.isStopped)
-			{
+//			if (_rootPs.isStopped)
+//			{
 				UpdateMain(data.GetMain());
 				UpdateRender(data.GetRender());
+				UpdateShape(data.GetShape());
+				UpdateEmission(data.GetEmission());
 				UpdateColorOverLife(data.GetColorOverLife());
-			}
-			else
-			{
-				Debug.Log(_cachedTransform.name);
-				Debug.Break();
-			}
+//			}
+//			else
+//			{
+//				Debug.Log(_cachedTransform.name);
+//				Debug.Break();
+//			}
 		}
 
 		private void UpdateMain(PeffectData.PeMain peMain)
@@ -165,6 +167,39 @@ namespace Peffects
 			_rootPsRender.sortingLayerID = peRender.SortingLayerId;
 			_rootPsRender.sortingLayerName = peRender.SortingLayerName;
 			_rootPsRender.sortingOrder = peRender.SortingOrder;
+		}
+
+		private void UpdateShape(PeffectData.PeShape peShape)
+		{
+			_rootShape.alignToDirection = peShape.AlignToDirection;
+			_rootShape.enabled = peShape.Enabled;
+			_rootShape.mesh = peShape.PeMesh;
+			_rootShape.meshRenderer = peShape.PeMeshRenderer;
+			_rootShape.skinnedMeshRenderer = peShape.PeSkinnedMeshRenderer;
+			_rootShape.useMeshColors = peShape.UseMeshColors;
+			_rootShape.useMeshMaterialIndex = peShape.UseMeshMaterialIndex;
+			_rootShape.angle = peShape.Angle;
+			_rootShape.arc = peShape.Arc;
+			_rootShape.box = peShape.Box;
+			_rootShape.length = peShape.Length;
+			_rootShape.meshMaterialIndex = peShape.MeshMaterialIndex;
+			_rootShape.meshScale = peShape.MeshScale;
+			_rootShape.meshShapeType = peShape.MeshShapeType;
+			_rootShape.normalOffset = peShape.NormalOffset;
+			_rootShape.radius = peShape.Radius;
+			_rootShape.randomDirectionAmount = peShape.RandomDirectionAmount;
+			_rootShape.shapeType = peShape.ShapeType;
+			_rootShape.sphericalDirectionAmount = peShape.SphericalDirectionAmount;
+		}
+
+		private void UpdateEmission(PeffectData.PeEmission peEmission)
+		{
+			_rootEmission.SetBursts(peEmission.Bursts);
+			_rootEmission.enabled = peEmission.Enabled;
+			_rootEmission.rateOverDistance = peEmission.RateOverDistance;
+			_rootEmission.rateOverDistanceMultiplier = peEmission.RateOverDistanceMultiplier;
+			_rootEmission.rateOverTime = peEmission.RateOverTime;
+			_rootEmission.rateOverTimeMultiplier = peEmission.RateOverTimeMultiplier;
 		}
 
 		private void UpdateColorOverLife(PeffectData.PeColorOverLife peColorOverLife)

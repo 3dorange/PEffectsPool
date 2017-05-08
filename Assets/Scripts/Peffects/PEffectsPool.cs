@@ -22,8 +22,8 @@ namespace Peffects
 
 		private Dictionary<int,PeDummy> _dummies = new Dictionary<int, PeDummy>();						//particleSystem dummies
 		private Dictionary<string,PeffectData> _effectsData = new Dictionary<string, PeffectData>();		//data and parameters from particles for dummies
-		private List<int> _dummiesInUse = new List<int>();
-		private List<int> _dummiesIdToRemoveFromUsing = new List<int>();
+
+		private Queue<int> _dummiesCanBeUsed = new Queue<int>();
 
 		private int _dummiesCreated;
 		private bool _needToCreateInUpdate;
@@ -91,9 +91,7 @@ namespace Peffects
 				else
 				{
 					var dummy = _dummies[id];
-//					Debug.Log("Spawn " + dummy.name);
 					dummy.Spawn(id,_effectsData[keyCode], position, rotation, parent, deSpawnTime, deSpawnCallback);
-					_dummiesInUse.Add(id);
 				}
 			}
 			else
@@ -110,20 +108,20 @@ namespace Peffects
 
 		public void RemoveFromUsed(PeDummy dummy)
 		{
-			_dummiesIdToRemoveFromUsing.Add(dummy.GetId());
+			_dummiesCanBeUsed.Enqueue(dummy.GetId());
 		}
 
 		private int GetFreeDummyId()
 		{
 			var n = -1;
-			for (var i = 0; i < _dummiesCreated; i++)
+
+			var count = _dummiesCanBeUsed.Count;
+			if (count > 0)
 			{
-				if (_dummiesInUse.Contains(i)) continue;
-				n = i;
-				break;
+				n = _dummiesCanBeUsed.Dequeue();
 			}
 
-			if (CanSpawnMore &&_dummiesCreated - _dummiesInUse.Count < 3)
+			if (CanSpawnMore && count < 3)
 			{
 				CreateDummy();
 			}
@@ -156,18 +154,6 @@ namespace Peffects
 			}
 		}
 
-		private void LateUpdate()
-		{
-			var count = _dummiesIdToRemoveFromUsing.Count;
-
-			for (var i = 0; i < count; i++)
-			{
-				_dummiesInUse.Remove(_dummiesIdToRemoveFromUsing[i]);
-			}
-
-			_dummiesIdToRemoveFromUsing.Clear();
-		}
-
 		private void CreateDummys()
 		{
 			if (TimeCreate <= 0)
@@ -197,6 +183,8 @@ namespace Peffects
 
 		private void CreateDummy()
 		{
+			_dummiesCanBeUsed.Enqueue(_dummiesCreated);
+
 			var pInstance = new GameObject();
 			pInstance.transform.parent = _cachedTransform;
 			pInstance.name = string.Concat("Dummy_", _dummiesCreated);

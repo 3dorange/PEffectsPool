@@ -379,10 +379,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a882704c0dad1ad49b617837a0b2ba08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ParticlesToCreateNumber: 100
+  ParticlesToCreateNumber: 10
   TimeCreate: 2
   ParticleMaxChilds: 0
-  CanSpawnMore: 0
+  CanSpawnMore: 1
 --- !u!4 &750405297
 Transform:
   m_ObjectHideFlags: 0

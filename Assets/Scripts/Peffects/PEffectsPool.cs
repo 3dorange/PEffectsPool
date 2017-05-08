@@ -117,7 +117,7 @@ namespace Peffects
 				break;
 			}
 
-			if (CanSpawnMore &&_dummiesCreated - n < 3)
+			if (CanSpawnMore &&_dummiesCreated - _dummiesInUse.Count < 3)
 			{
 				CreateDummy();
 			}

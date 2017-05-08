@@ -88,8 +88,6 @@ namespace Peffects
 
 		private void UseEffectData(PeffectData data)
 		{
-//			_rootPs.Stop();
-//			_rootPs.gameObject.SetActive(false);
 			if (_rootPs.isStopped)
 			{
 				UpdateMain(data.GetMain());
@@ -101,7 +99,6 @@ namespace Peffects
 				Debug.Log(_cachedTransform.name);
 				Debug.Break();
 			}
-//			_rootPs.gameObject.SetActive(true);
 		}
 
 		private void UpdateMain(PeffectData.PeMain peMain)

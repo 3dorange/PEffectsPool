@@ -22,7 +22,7 @@ namespace Peffects
 
 		private Dictionary<int,PeDummy> _dummies = new Dictionary<int, PeDummy>();						//particleSystem dummies
 		private Dictionary<string,PeffectData> _effectsData = new Dictionary<string, PeffectData>();		//data and parameters from particles for dummies
-		private HashSet<int> _dummiesInUse = new HashSet<int>();
+		private List<int> _dummiesInUse = new List<int>();
 
 		private int _dummiesCreated;
 		private bool _needToCreateInUpdate;
@@ -49,7 +49,7 @@ namespace Peffects
 				return;
 			}
 
-			var particleObject = Resources.Load("path") as GameObject;
+			var particleObject = Resources.Load(path) as GameObject;
 
 			if (particleObject == null)
 			{
@@ -181,7 +181,7 @@ namespace Peffects
 		{
 			var pInstance = new GameObject();
 			pInstance.transform.parent = _cachedTransform;
-
+			pInstance.name = string.Concat("Dummy_", _dummiesCreated);
 			_dummies[_dummiesCreated] = pInstance.AddComponent<PeDummy>();
 			_dummies[_dummiesCreated].Init(this);
 

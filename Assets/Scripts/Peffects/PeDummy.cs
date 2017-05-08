@@ -20,6 +20,7 @@ namespace Peffects
 
 		private ParticleSystem.MainModule _rootMain;
 		private ParticleSystem.EmissionModule _rootEmission;
+		private ParticleSystem.ShapeModule _rootShape;
 
 		private Action _deSpawnCallback;
 		private float _deSpawnTime;
@@ -85,6 +86,7 @@ namespace Peffects
 		private void Activate()
 		{
 			_rootEmission.enabled = true;
+			_rootPs.Play();
 			ChangeChildrenState(true);
 			_currentDummyState = DummyState.Spawened;
 		}
@@ -141,9 +143,12 @@ namespace Peffects
 
 			_rootMain = _rootPs.main;
 			_rootEmission = _rootPs.emission;
+			_rootShape =_rootPs.shape;
 
 			_rootMain.playOnAwake = false;
 			_rootEmission.enabled = false;
+			_rootMain.loop = false;
+			_rootShape.shapeType = ParticleSystemShapeType.Sphere;
 		}
 
 	}

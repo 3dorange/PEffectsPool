@@ -94,6 +94,7 @@ namespace Peffects
 		private void Deactivate()
 		{
 			_rootEmission.enabled = false;
+			_rootPs.Stop();
 			_cachedTransform.parent = _pool.transform;
 			_cachedTransform.localPosition = Vector3.zero;
 			ChangeChildrenState(false);

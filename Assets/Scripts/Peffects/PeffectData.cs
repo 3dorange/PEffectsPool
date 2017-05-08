@@ -162,6 +162,7 @@ namespace Peffects
 			};
 			#endregion
 			#region Emission
+
 			_peEmission = new PeEmission
 			{
 				BurstCount = particleSystem.emission.burstCount,
@@ -169,9 +170,9 @@ namespace Peffects
 				RateOverDistance = particleSystem.emission.rateOverDistance,
 				RateOverDistanceMultiplier = particleSystem.emission.rateOverDistanceMultiplier,
 				RateOverTime = particleSystem.emission.rateOverTime,
-				RateOverTimeMultiplier = particleSystem.emission.rateOverTimeMultiplier
+				RateOverTimeMultiplier = particleSystem.emission.rateOverTimeMultiplier,
+				Bursts = new ParticleSystem.Burst[particleSystem.emission.burstCount]
 			};
-			_peEmission.Bursts = new ParticleSystem.Burst[particleSystem.emission.burstCount];
 			particleSystem.emission.GetBursts(_peEmission.Bursts);
 			#endregion
 		}

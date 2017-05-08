@@ -113,7 +113,6 @@ namespace Peffects
 			_rootMain.gravityModifierMultiplier = peMain.GravityModifierMultiplier;
 			_rootMain.loop = peMain.Loop;
 			_rootMain.maxParticles = peMain.MaxParticles;
-//			_rootMain.playOnAwake = peMain.PlayOnAwake;
 			_rootMain.prewarm = peMain.Prewarm;
 			_rootMain.randomizeRotationDirection = peMain.RandomizeRotationDirection;
 			_rootMain.scalingMode = peMain.ScalingMode;
@@ -148,6 +147,8 @@ namespace Peffects
 
 		private void UpdateRender(PeffectData.PeRender peRender)
 		{
+			_rootPsRender.enabled = false;
+
 			_rootPsRender.alignment = peRender.Alignment;
 			_rootPsRender.cameraVelocityScale = peRender.CameraVelocityScale;
 			_rootPsRender.lengthScale = peRender.LengthScale;
@@ -169,12 +170,16 @@ namespace Peffects
 			_rootPsRender.sortingLayerID = peRender.SortingLayerId;
 			_rootPsRender.sortingLayerName = peRender.SortingLayerName;
 			_rootPsRender.sortingOrder = peRender.SortingOrder;
+
+			_rootPsRender.enabled = true;
 		}
 
 		private void UpdateShape(PeffectData.PeShape peShape)
 		{
+			_rootShape.enabled = false;
+			if (!peShape.Enabled) return;
+
 			_rootShape.alignToDirection = peShape.AlignToDirection;
-			_rootShape.enabled = peShape.Enabled;
 			_rootShape.mesh = peShape.PeMesh;
 			_rootShape.meshRenderer = peShape.PeMeshRenderer;
 			_rootShape.skinnedMeshRenderer = peShape.PeSkinnedMeshRenderer;
@@ -192,22 +197,31 @@ namespace Peffects
 			_rootShape.randomDirectionAmount = peShape.RandomDirectionAmount;
 			_rootShape.shapeType = peShape.ShapeType;
 			_rootShape.sphericalDirectionAmount = peShape.SphericalDirectionAmount;
+
+			_rootShape.enabled = peShape.Enabled;
 		}
 
 		private void UpdateEmission(PeffectData.PeEmission peEmission)
 		{
+			_rootEmission.enabled = false;
+			if (!peEmission.Enabled) return;
+
 			_rootEmission.SetBursts(peEmission.Bursts);
-			_rootEmission.enabled = peEmission.Enabled;
 			_rootEmission.rateOverDistance = peEmission.RateOverDistance;
 			_rootEmission.rateOverDistanceMultiplier = peEmission.RateOverDistanceMultiplier;
 			_rootEmission.rateOverTime = peEmission.RateOverTime;
 			_rootEmission.rateOverTimeMultiplier = peEmission.RateOverTimeMultiplier;
+
+			_rootEmission.enabled = peEmission.Enabled;
 		}
 
 		private void UpdateColorOverLife(PeffectData.PeColorOverLife peColorOverLife)
 		{
-			_rootColorOverLife.enabled = peColorOverLife.Enabled;
+			_rootColorOverLife.enabled = false;
+			if (!peColorOverLife.Enabled) return;
+
 			_rootColorOverLife.color = peColorOverLife.Color;
+			_rootColorOverLife.enabled = peColorOverLife.Enabled;
 		}
 
 		private void Activate()
@@ -220,7 +234,7 @@ namespace Peffects
 
 		private void Deactivate()
 		{
-			_rootPs.Stop();
+			_rootPs.Stop(false);
 			_rootEmission.enabled = false;
 			_cachedTransform.parent = _pool.transform;
 //			_cachedTransform.localPosition = Vector3.zero;
@@ -289,6 +303,5 @@ namespace Peffects
 
 			_rootPs.Stop();
 		}
-
 	}
 }

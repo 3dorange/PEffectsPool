@@ -105,9 +105,11 @@ namespace Peffects
 
 		public void DeSpawn(PeDummy dummy)
 		{
-//			Debug.Log("Despawn " + dummy.name);
 			dummy.DeSpawn();
-//			_dummiesInUse.Remove(dummy.GetId());
+		}
+
+		public void RemoveFromUsed(PeDummy dummy)
+		{
 			_dummiesIdToRemoveFromUsing.Add(dummy.GetId());
 		}
 

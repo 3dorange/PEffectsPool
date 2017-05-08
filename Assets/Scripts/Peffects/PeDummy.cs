@@ -29,6 +29,10 @@ namespace Peffects
 		private PEffectsPool _pool;
 		private int _id;
 
+		private bool _needToRemove;
+		private float _deSpawnWaitTime;
+		private const float WaitTime = 0.5f;
+
 		public void Init(PEffectsPool pool)
 		{
 			if (_inited) return;
@@ -86,21 +90,19 @@ namespace Peffects
 			_spawnTime = 0;
 		}
 
+		private void RemoveFromUsed()
+		{
+			_pool.RemoveFromUsed(this);
+			_needToRemove = false;
+		}
+
 		private void UseEffectData(PeffectData data)
 		{
-//			if (_rootPs.isStopped)
-//			{
-				UpdateMain(data.GetMain());
-				UpdateRender(data.GetRender());
-				UpdateShape(data.GetShape());
-				UpdateEmission(data.GetEmission());
-				UpdateColorOverLife(data.GetColorOverLife());
-//			}
-//			else
-//			{
-//				Debug.Log(_cachedTransform.name);
-//				Debug.Break();
-//			}
+			UpdateMain(data.GetMain());
+			UpdateRender(data.GetRender());
+			UpdateShape(data.GetShape());
+			UpdateEmission(data.GetEmission());
+			UpdateColorOverLife(data.GetColorOverLife());
 		}
 
 		private void UpdateMain(PeffectData.PeMain peMain)
@@ -224,6 +226,9 @@ namespace Peffects
 //			_cachedTransform.localPosition = Vector3.zero;
 			ChangeChildrenState(false);
 			_currentDummyState = DummyState.DeSpawned;
+
+			_needToRemove = true;
+			_deSpawnWaitTime = Time.time;
 		}
 
 		private void ChangeChildrenState(bool state)
@@ -239,6 +244,11 @@ namespace Peffects
 				{
 					DeSpawnByTime();
 				}
+			}
+
+			if (_needToRemove && Time.time - _deSpawnWaitTime > WaitTime)
+			{
+				RemoveFromUsed();
 			}
 		}
 
